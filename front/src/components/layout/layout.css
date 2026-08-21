@@ -1,0 +1,233 @@
+.layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--cor-fundo);
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  background: linear-gradient(135deg, #1e5d26 0%, #2b7340 100%);
+  color: #fff;
+  box-shadow: 0 8px 22px rgba(30, 93, 38, 0.22);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.header-esquerda,
+.header-direita {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.header-menu {
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.header-titulo {
+  margin: 0;
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.header-usuario {
+  display: none;
+  font-weight: 700;
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.header-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--cor-alerta);
+  color: var(--cor-texto);
+  font-weight: 800;
+}
+
+.header-sair {
+  display: none;
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 8px 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.header-painel-mobile {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px 16px 16px;
+  background: var(--cor-primaria);
+  color: #fff;
+}
+
+.header-painel-mobile .btn {
+  width: 100%;
+}
+
+.navegacao-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px 0 0;
+}
+
+.navegacao {
+  display: flex;
+  gap: 8px;
+  padding: 0 16px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  background: rgba(255, 255, 255, 0.35);
+  border-radius: 16px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.aba {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  padding: 10px 14px;
+  background: #f0f6f1;
+  color: var(--cor-texto);
+  font-weight: 800;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.aba:hover {
+  background: #e3efe4;
+}
+
+.aba-ativa {
+  background: var(--cor-primaria);
+  color: #fff;
+  box-shadow: 0 8px 18px rgba(30, 93, 38, 0.18);
+}
+
+.aba-ativa.aba-agendar {
+  background: var(--cor-secundaria);
+  box-shadow: 0 6px 14px rgba(107, 33, 94, 0.22);
+}
+
+.aba-badge {
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.aba-badge-alerta {
+  background: var(--cor-alerta);
+  color: var(--cor-texto);
+}
+
+.aba-badge-sucesso {
+  background: var(--cor-primaria-media);
+  color: #fff;
+}
+
+.aba-badge-neutro {
+  background: #d9e2ec;
+  color: var(--cor-texto);
+}
+
+.aba-ativa .aba-badge-alerta,
+.aba-ativa .aba-badge-sucesso,
+.aba-ativa .aba-badge-neutro {
+  background: #fff;
+  color: var(--cor-primaria);
+}
+
+.aba-ativa.aba-agendar .aba-badge {
+  color: var(--cor-secundaria);
+}
+
+.btn-bloquear {
+  margin: 0 16px;
+  box-shadow: 0 8px 18px rgba(107, 33, 94, 0.18);
+}
+
+@media (min-width: 768px) {
+  .header {
+    padding: 16px 28px;
+  }
+
+  .header-titulo {
+    font-size: 1.15rem;
+  }
+
+  .header-usuario,
+  .header-sair {
+    display: inline-flex;
+  }
+
+  .header-menu {
+    display: none;
+  }
+
+  .header-painel-mobile {
+    display: none;
+  }
+
+  .navegacao-wrap {
+    max-width: 760px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px 24px 0;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .navegacao {
+    padding: 8px 10px;
+    flex: 1;
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid rgba(30, 93, 38, 0.08);
+    box-shadow: 0 8px 20px rgba(30, 93, 38, 0.06);
+  }
+
+  .btn-bloquear {
+    margin: 0;
+    flex: 0 0 auto;
+  }
+}

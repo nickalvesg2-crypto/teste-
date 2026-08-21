@@ -1,0 +1,102 @@
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 12px;
+  background: rgba(44, 62, 80, 0.45);
+}
+
+.modal-card {
+  width: 100%;
+  max-width: 480px;
+  max-height: 92vh;
+  overflow-y: auto;
+  background: var(--cor-superficie);
+  border-radius: 16px 16px 12px 12px;
+  box-shadow: var(--sombra-forte);
+  padding: 20px;
+}
+
+.modal-card h3 {
+  margin: 0 0 16px;
+  color: var(--cor-primaria);
+  font-size: 1.25rem;
+}
+
+.modal-erro {
+  background: #f6e4f1;
+  color: var(--cor-secundaria);
+  padding: 10px 12px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+.modal-campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.modal-campo label {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--cor-texto-suave);
+}
+
+.modal-campo input,
+.modal-campo select,
+.modal-campo textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--cor-borda);
+  border-radius: 12px;
+  color: var(--cor-texto);
+  background: #fff;
+}
+
+.modal-horarios {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0 12px;
+}
+
+.modal-acoes {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.modal-acoes .btn {
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .modal-overlay {
+    align-items: center;
+    padding: 24px;
+  }
+
+  .modal-card {
+    border-radius: 16px;
+    padding: 24px;
+  }
+
+  .modal-horarios {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .modal-acoes {
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+
+  .modal-acoes .btn {
+    width: auto;
+  }
+}

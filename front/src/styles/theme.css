@@ -1,0 +1,131 @@
+:root {
+  --cor-primaria: #1e5d26;
+  --cor-primaria-media: #4caf50;
+  --cor-secundaria: #6b215e;
+  --cor-cyan: #00a2ed;
+  --cor-alerta: #fbc02d;
+  --cor-fundo: #f4f9f4;
+  --cor-superficie: #ffffff;
+  --cor-texto: #2c3e50;
+  --cor-texto-suave: #5a6b7a;
+  --cor-borda: #d7ead7;
+  --radius: 14px;
+  --radius-lg: 16px;
+  --sombra: 0 8px 24px rgba(30, 93, 38, 0.1);
+  --sombra-forte: 0 12px 32px rgba(30, 93, 38, 0.16);
+  --fonte: 'Nunito', 'Segoe UI', sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family: var(--fonte);
+  background: var(--cor-fundo);
+  color: var(--cor-texto);
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, opacity 0.12s ease;
+}
+
+.btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.btn-primario {
+  background: var(--cor-primaria);
+  color: #fff;
+  box-shadow: 0 6px 14px rgba(30, 93, 38, 0.22);
+}
+
+.btn-sucesso {
+  background: var(--cor-primaria-media);
+  color: #fff;
+}
+
+.btn-secundario {
+  background: var(--cor-secundaria);
+  color: #fff;
+}
+
+.btn-cyan {
+  background: var(--cor-cyan);
+  color: #fff;
+}
+
+.btn-alerta {
+  background: var(--cor-alerta);
+  color: var(--cor-texto);
+}
+
+.btn-ghost {
+  background: #eef5ee;
+  color: var(--cor-texto);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.badge-pendente {
+  background: #fff6d6;
+  color: #8a6a00;
+}
+
+.badge-confirmada {
+  background: #e7f6e8;
+  color: var(--cor-primaria);
+}
+
+.badge-recusada {
+  background: #f6e4f1;
+  color: var(--cor-secundaria);
+}
+
+.badge-finalizada {
+  background: #eceff1;
+  color: var(--cor-texto-suave);
+}
+
+.badge-reagendamento {
+  background: #e4f6fd;
+  color: #046a9a;
+}
