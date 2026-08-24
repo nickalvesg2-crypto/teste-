@@ -2,17 +2,18 @@ import api from "./api";
 
 const usuarioService = {
   criar: async (dados) => {
-    const { data } = await api.post("/usuarios/", dados);
+    const { data } = await api.post("/usuarios", dados);
     return data;
   },
 
   login: async (dados) => {
+    // Passa o objeto exatamente como a tela envia: { nome_usuario, senha }
     const { data } = await api.post("/usuarios/login", dados);
     return data;
   },
 
   listar: async () => {
-    const { data } = await api.get("/usuarios/");
+    const { data } = await api.get("/usuarios");
     return data;
   },
 
