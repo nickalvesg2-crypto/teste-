@@ -2,7 +2,7 @@ import api from "./api";
 
 const reuniaoService = {
   listar: async () => {
-    const { data } = await api.get("/reunioes/");
+    const { data } = await api.get("/reunioes");
     return data;
   },
 
