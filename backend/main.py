@@ -6,7 +6,9 @@ from backend.core.middleware import ExceptionHandlerMiddleware
 from backend.reunioes.controller import router as reuniao_router
 from backend.usuario.controller import router as usuario_router
 
+
 Base.metadata.create_all(bind=engine)
+
 
 app = FastAPI(
     title="Sistema de Gestão de Reuniões Escolares",
@@ -15,37 +17,47 @@ app = FastAPI(
     redoc_url="/redoc",
 )
 
-# 1. Configuração do CORS
+
+# ==========================================
+# CORS
+# ==========================================
+
+origins = [
+    "https://teste-frontend-j16d.onrender.com",
+    "http://localhost:5173",
+    "http://localhost:5174",
+    "http://localhost:5175",
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# 2. Middleware Customizado
-# Middleware de tratamento de exceções
+
+# ==========================================
+# TRATAMENTO DE EXCEÇÕES
+# ==========================================
+
 app.add_middleware(ExceptionHandlerMiddleware)
 
-# CORS deve ficar por último para ficar "por fora" dos demais middlewares
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=[
-        "http://localhost:5173",
-        "http://localhost:5174",
-        "http://localhost:5175",
-    ],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 
-# Registra os Routers
+# ==========================================
+# ROUTERS
+# ==========================================
+
 app.include_router(usuario_router)
 app.include_router(reuniao_router)
 
 
+# ==========================================
+# HEALTH CHECK
+# ==========================================
+
+@app.get("/", tags=["Health"])
 @app.get("/health", tags=["Health"])
 def health_check():
-  return {"status": "ok"}
+    return {"status": "ok"}
