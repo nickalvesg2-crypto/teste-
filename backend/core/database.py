@@ -1,7 +1,16 @@
+from pathlib import Path
 from sqlalchemy import create_engine
 from sqlalchemy.orm import DeclarativeBase, sessionmaker
 
-engine = create_engine("sqlite:///escola.db", echo=False)
+# Define o caminho absoluto para o banco dentro da pasta backend/
+BASE_DIR = Path(__file__).resolve().parent.parent
+DB_PATH = BASE_DIR / "escola.db"
+
+engine = create_engine(
+    f"sqlite:///{DB_PATH}", 
+    echo=False, 
+    connect_args={"check_same_thread": False}
+)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
