@@ -57,13 +57,13 @@ def remover_bloqueio(
 
 # --- SOLICITAÇÃO E AGENDAMENTO ---
 
-@router.get("/", response_model=List[ReuniaoResponseSchema])
+@router.get("", response_model=List[ReuniaoResponseSchema])
 def listar_reunioes(
     service: ReuniaoService = Depends(get_reuniao_service)
 ):
     return service.listar_reunioes()
 
-@router.post("/", response_model=ReuniaoResponseSchema, status_code=status.HTTP_201_CREATED)
+@router.post("", response_model=ReuniaoResponseSchema, status_code=status.HTTP_201_CREATED)
 def agendar_reuniao(
     payload: ReuniaoSolicitarSchema,
     solicitado_por_id: int | None = None,

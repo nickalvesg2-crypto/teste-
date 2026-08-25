@@ -139,7 +139,7 @@ class ReuniaoRepository:
             reuniao.data_dia = nova_data
             reuniao.hora_inicio = nova_hora_inicio
             reuniao.hora_fim = nova_hora_fim
-            reuniao.status = StatusReuniaoEnum.PENDENTE
+            reuniao.status = StatusReuniaoEnum.REAGENDAMENTO_SOLICITADO
             if motivo:
                 reuniao.motivo_reagendamento = motivo
             self.db.commit()

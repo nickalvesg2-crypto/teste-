@@ -1,8 +1,9 @@
 from datetime import datetime, date, time
 from enum import Enum
 from typing import Optional, TYPE_CHECKING
-from sqlalchemy import String, ForeignKey, DateTime, Date, Time, Enum as SQLEnum, Text, func
+from sqlalchemy import String, ForeignKey, DateTime, Date, Time, Text, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.types import TypeDecorator
 
 from backend.core.database import Base
 
@@ -16,6 +17,31 @@ class StatusReuniaoEnum(str, Enum):
     RECUSADA = "Recusada"
     REAGENDAMENTO_SOLICITADO = "Reagendamento Solicitado"
     FINALIZADA = "Finalizada"
+
+
+class EnumString(TypeDecorator):
+    """Salva o valor do enum e aceita valores salvos em nome ou valor."""
+    impl = String
+    cache_ok = True
+
+    def __init__(self, enum_cls, length=50, **kw):
+        super().__init__(length=length, **kw)
+        self.enum_cls = enum_cls
+
+    def process_bind_param(self, value, dialect):
+        if value is None:
+            return None
+        if isinstance(value, self.enum_cls):
+            return value.value
+        return str(value)
+
+    def process_result_value(self, value, dialect):
+        if value is None:
+            return None
+        for member in self.enum_cls:
+            if value == member.value or value == member.name:
+                return member
+        return value
 
 
 class Reuniao(Base):
@@ -38,7 +64,7 @@ class Reuniao(Base):
     )
 
     status: Mapped[StatusReuniaoEnum] = mapped_column(
-        SQLEnum(StatusReuniaoEnum, native_enum=False),
+        EnumString(StatusReuniaoEnum, length=50),
         nullable=False,
         default=StatusReuniaoEnum.PENDENTE,
     )

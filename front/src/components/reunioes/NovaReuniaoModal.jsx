@@ -3,6 +3,19 @@ import reuniaoService from '../../services/reuniaoService';
 import usuarioService from '../../services/usuarioService';
 import '../../styles/modal.css';
 
+const extrairErro = (err) => {
+  const detail = err?.response?.data?.detail;
+
+  if (Array.isArray(detail)) {
+    return detail.map((item) => item?.msg || item?.error || JSON.stringify(item)).join(' | ');
+  }
+
+  if (typeof detail === 'string') return detail;
+  if (detail && typeof detail === 'object') return detail.msg || detail.error || JSON.stringify(detail);
+
+  return err?.message || 'Erro ao agendar reunião.';
+};
+
 export default function NovaReuniaoModal({ solicitanteId, onClose, onSuccess }) {
   const [usuarios, setUsuarios] = useState([]);
   const [formData, setFormData] = useState({
@@ -59,7 +72,7 @@ export default function NovaReuniaoModal({ solicitanteId, onClose, onSuccess }) 
       onSuccess();
       onClose();
     } catch (err) {
-      setErro(err.response?.data?.detail || err.message || 'Erro ao agendar reunião.');
+      setErro(extrairErro(err));
     } finally {
       setCarregando(false);
     }

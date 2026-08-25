@@ -9,6 +9,19 @@ import NovaReuniaoModal from './reunioes/NovaReuniaoModal';
 import BloqueioModal from './bloqueios/BloqueioModal';
 import ListaBloqueios from './bloqueios/ListaBloqueios';
 
+const extrairErro = (err) => {
+  const detail = err?.response?.data?.detail;
+
+  if (Array.isArray(detail)) {
+    return detail.map((item) => item?.msg || item?.error || JSON.stringify(item)).join(' | ');
+  }
+
+  if (typeof detail === 'string') return detail;
+  if (detail && typeof detail === 'object') return detail.msg || detail.error || JSON.stringify(detail);
+
+  return err?.message || 'Erro ao processar a ação.';
+};
+
 export default function Painel() {
   const { usuario: user, logout } = useAuth();
 
@@ -112,7 +125,7 @@ export default function Painel() {
       await reuniaoService.confirmar(idReuniao, user?.id_usuario);
       carregarReunioes();
     } catch (err) {
-      alert(err.response?.data?.detail || 'Erro ao confirmar reunião.');
+      alert(extrairErro(err) || 'Erro ao confirmar reunião.');
     }
   };
 
@@ -124,7 +137,7 @@ export default function Painel() {
         await reuniaoService.recusar(idReuniao, user?.id_usuario, motivo);
         carregarReunioes();
       } catch (err) {
-        alert(err.response?.data?.detail || 'Erro ao recusar reunião.');
+        alert(extrairErro(err) || 'Erro ao recusar reunião.');
       }
     }
   };
@@ -135,7 +148,7 @@ export default function Painel() {
         await reuniaoService.finalizar(idReuniao, user?.id_usuario);
         carregarReunioes();
       } catch (err) {
-        alert(err.response?.data?.detail || 'Erro ao finalizar reunião.');
+        alert(extrairErro(err) || 'Erro ao finalizar reunião.');
       }
     }
   };
@@ -147,7 +160,7 @@ export default function Painel() {
       await reuniaoService.deletarBloqueio(idBloqueio, user.id_usuario);
       await carregarBloqueios();
     } catch (err) {
-      alert(err.response?.data?.detail || 'Erro ao remover bloqueio.');
+      alert(extrairErro(err) || 'Erro ao remover bloqueio.');
     }
   };
 

@@ -2,6 +2,19 @@ import React, { useState } from 'react';
 import reuniaoService from '../../services/reuniaoService';
 import '../../styles/modal.css';
 
+const extrairErro = (err) => {
+  const detail = err?.response?.data?.detail;
+
+  if (Array.isArray(detail)) {
+    return detail.map((item) => item?.msg || item?.error || JSON.stringify(item)).join(' | ');
+  }
+
+  if (typeof detail === 'string') return detail;
+  if (detail && typeof detail === 'object') return detail.msg || detail.error || JSON.stringify(detail);
+
+  return err?.message || 'Erro ao criar bloqueio de agenda.';
+};
+
 export default function BloqueioModal({ usuarioId, onClose, onSuccess }) {
   const [formData, setFormData] = useState({
     data_dia: '',
@@ -26,7 +39,7 @@ export default function BloqueioModal({ usuarioId, onClose, onSuccess }) {
       onSuccess();
       onClose();
     } catch (err) {
-      setErro(err.response?.data?.detail || 'Erro ao criar bloqueio de agenda.');
+      setErro(extrairErro(err));
     } finally {
       setCarregando(false);
     }

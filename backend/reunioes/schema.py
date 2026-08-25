@@ -76,4 +76,4 @@ class ReuniaoResponseSchema(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 class MotivoSchema(BaseModel):
-    motivo: Optional[str] = True
+    motivo: Optional[str] = None  # <--- Mude de True para None

@@ -7,6 +7,19 @@ export default function Login() {
   const { login } = useAuth();
   const [modoCadastro, setModoCadastro] = useState(false);
 
+  const extrairErro = (err) => {
+    const detail = err?.response?.data?.detail;
+
+    if (Array.isArray(detail)) {
+      return detail.map((item) => item?.msg || item?.error || JSON.stringify(item)).join(' | ');
+    }
+
+    if (typeof detail === 'string') return detail;
+    if (detail && typeof detail === 'object') return detail.msg || detail.error || JSON.stringify(detail);
+
+    return err?.message || 'Erro ao realizar operação.';
+  };
+
   const [nomeUsuario, setNomeUsuario] = useState('');
   const [senha, setSenha] = useState('');
   const [cargo, setCargo] = useState('SECRETARIA');
@@ -32,7 +45,7 @@ export default function Login() {
         login(usuario);
       }
     } catch (err) {
-      setErro(err.response?.data?.detail || 'Erro ao realizar operação.');
+      setErro(extrairErro(err));
     } finally {
       setCarregando(false);
     }
