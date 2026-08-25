@@ -12,12 +12,11 @@ if TYPE_CHECKING:
 
 
 class StatusReuniaoEnum(str, Enum):
-    PENDENTE = "Pendente"
-    CONFIRMADA = "Confirmada"
-    RECUSADA = "Recusada"
-    REAGENDAMENTO_SOLICITADO = "Reagendamento Solicitado"
-    FINALIZADA = "Finalizada"
-
+    PENDENTE = "PENDENTE"
+    CONFIRMADA = "CONFIRMADA"
+    RECUSADA = "RECUSADA"
+    REAGENDAMENTO_SOLICITADO = "REAGENDAMENTO_SOLICITADO"
+    FINALIZADA = "FINALIZADA"
 
 class EnumString(TypeDecorator):
     """Salva o valor do enum e aceita valores salvos em nome ou valor."""
@@ -38,12 +37,19 @@ class EnumString(TypeDecorator):
     def process_result_value(self, value, dialect):
         if value is None:
             return None
+        
+        value_str = str(value).strip()
+        
+        # Busca insensível a maiúsculas/minúsculas (compara tanto com .value quanto com .name)
         for member in self.enum_cls:
-            if value == member.value or value == member.name:
+            if value_str.upper() == member.value.upper() or value_str.upper() == member.name.upper():
                 return member
-        return value
-
-
+                
+        # Se mesmo assim não achar, tenta forçar a conversão pelo Enum ou lança exceção limpa
+        try:
+            return self.enum_cls(value)
+        except ValueError:
+            return value
 class Reuniao(Base):
     __tablename__ = "reunioes"
 
