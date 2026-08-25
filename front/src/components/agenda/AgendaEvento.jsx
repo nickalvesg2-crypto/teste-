@@ -3,11 +3,15 @@ import { formatarDataCurta, formatarHora } from '../../utils/data';
 import './agenda.css';
 
 function classeBadge(status) {
-  if (status === 'Pendente') return 'badge badge-pendente';
-  if (status === 'Confirmada') return 'badge badge-confirmada';
-  if (status === 'Recusada') return 'badge badge-recusada';
-  if (status === 'Finalizada') return 'badge badge-finalizada';
-  if (status === 'Reagendamento Solicitado') return 'badge badge-reagendamento';
+  const statusNormalizado = status?.toUpperCase();
+
+  if (statusNormalizado === 'PENDENTE') return 'badge badge-pendente';
+  if (statusNormalizado === 'CONFIRMADA') return 'badge badge-confirmada';
+  if (statusNormalizado === 'RECUSADA') return 'badge badge-recusada';
+  if (statusNormalizado === 'FINALIZADA') return 'badge badge-finalizada';
+  if (statusNormalizado === 'REAGENDAMENTO_SOLICITADO' || statusNormalizado === 'REAGENDAMENTO SOLICITADO') {
+    return 'badge badge-reagendamento';
+  }
   return 'badge';
 }
 
@@ -17,6 +21,8 @@ export default function AgendaEvento({
   onRecusar,
   onFinalizar
 }) {
+  const statusUpper = evento.status?.toUpperCase();
+
   return (
     <article className="agenda-evento">
       <div className="agenda-evento-hora">
@@ -36,7 +42,7 @@ export default function AgendaEvento({
           Solicitado por: {evento.solicitante?.nome_usuario}
         </p>
 
-        {evento.status === 'Pendente' && (
+        {statusUpper === 'PENDENTE' && (
           <div className="agenda-evento-acoes">
             <button
               type="button"
@@ -55,7 +61,7 @@ export default function AgendaEvento({
           </div>
         )}
 
-        {evento.status === 'Confirmada' && (
+        {statusUpper === 'CONFIRMADA' && (
           <div className="agenda-evento-acoes">
             <button
               type="button"
