@@ -23,13 +23,9 @@ app = FastAPI(
 # ==========================================
 
 origins = [
-    "https://teste-frontend-j16d.onrender.com",
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
-    "http://localhost:5174",
-    "http://127.0.0.1:5174",
-    "http://localhost:5175",
-    "http://127.0.0.1:5175",
+    "https://teste-frontend-j16d.onrender.com",  # Seu front-end no Render
+    "http://localhost:5173",                     # Seu ambiente local (Vite/React)
+    "http://localhost:3000",
 ]
 
 app.add_middleware(
