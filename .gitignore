@@ -1,0 +1,52 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+*.pdb
+*.egg-info/
+.venv/
+venv/
+ENV/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# FastAPI / SQLAlchemy
+*.db
+*.sqlite3
+backend/*.db
+backend/*.sqlite3
+
+# Environment / secrets
+.env
+.env.*
+*.env
+
+# Node / Frontend
+node_modules/
+dist/
+build/
+.vite/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+
+# Coverage / temp
+.coverage
+coverage/
+htmlcov/
+*.tmp
+*.temp
