@@ -1,57 +1,51 @@
-import sqlite3
+import sys
+import os
 
-conn = sqlite3.connect("backend/escola.db")
-cursor = conn.cursor()
+# 1. Ajusta os caminhos
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+
+# 2. Importa apenas o Base e o engine do seu projeto principal
+from main import Base
+
+# 3. URLs dos bancos
+URL_SQLITE = "sqlite:///escola.db"
+URL_POSTGRES = "postgresql://escola_db_stwq_user:0VkDMdnXpsiYJcp31tx8bHRjCqOjR5u2@dpg-da82ve9srm7s73dv0kig-a.oregon-postgres.render.com/escola_db_stwq"
+
+# Conexões
+engine_sqlite = create_engine(URL_SQLITE)
+engine_postgres = create_engine(URL_POSTGRES)
+
+print("⏳ Criando tabelas no PostgreSQL do Render...")
+Base.metadata.create_all(bind=engine_postgres)
+
+print("⏳ Migrando dados das tabelas...")
+SessionLocal = sessionmaker(bind=engine_sqlite)
+SessionRemote = sessionmaker(bind=engine_postgres)
+
+db_local = SessionLocal()
+db_remote = SessionRemote()
 
 try:
-    cursor.execute("ALTER TABLE reunioes RENAME TO reunioes_antiga;")
-
-    cursor.execute("""
-    CREATE TABLE reunioes (
-        id_reuniao INTEGER PRIMARY KEY AUTOINCREMENT,
-        aluno VARCHAR(150) NOT NULL,
-        responsavel VARCHAR(150) NOT NULL DEFAULT '',
-        turma VARCHAR(50) NOT NULL,
-        data_dia DATE NOT NULL,
-        hora_inicio TIME NOT NULL,
-        hora_fim TIME NOT NULL,
-        solicitado_por_id INTEGER NOT NULL DEFAULT 1,
-        destinatario_id INTEGER,
-        status VARCHAR(24) NOT NULL,
-        motivo_reagendamento TEXT,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
-        FOREIGN KEY (solicitado_por_id) REFERENCES usuarios (id_usuario) ON DELETE RESTRICT,
-        FOREIGN KEY (destinatario_id) REFERENCES usuarios (id_usuario) ON DELETE RESTRICT
-    );
-    """)
-
-    cursor.execute("""
-    INSERT INTO reunioes (
-        id_reuniao, aluno, responsavel, turma, data_dia,
-        hora_inicio, hora_fim, solicitado_por_id, destinatario_id,
-        status, motivo_reagendamento
-    )
-    SELECT 
-        id_reuniao,
-        aluno,
-        '' AS responsavel,
-        turma,
-        data_dia,
-        hora_inicio,
-        hora_fim,
-        1 AS solicitado_por_id,
-        NULL AS destinatario_id,
-        status,
-        motivo_reagendamento
-    FROM reunioes_antiga;
-    """)
-
-    cursor.execute("DROP TABLE reunioes_antiga;")
-    conn.commit()
-    print("✅ Banco antigo adaptado para o novo esquema com sucesso!")
+    # Percorre automaticamente todas as tabelas registradas na Base
+    for mapper in Base.registry.mappers:
+        model_class = mapper.class_
+        registros = db_local.query(model_class).all()
+        print(f"Copiando {len(registros)} registros da tabela '{model_class.__tablename__}'...")
+        
+        for reg in registros:
+            db_remote.merge(reg)
+            
+    db_remote.commit()
+    print("✅ MIGRAÇÃO CONCLUÍDA COM SUCESSO! Todos os seus dados foram enviados para o Render.")
 
 except Exception as e:
-    conn.rollback()
-    print(f"❌ Erro na migração: {e}")
+    db_remote.rollback()
+    print(f"❌ Ocorreu um erro durante a migração: {e}")
+
 finally:
-    conn.close()
+    db_local.close()
+    db_remote.close()
