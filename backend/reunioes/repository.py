@@ -93,7 +93,7 @@ class ReuniaoRepository:
         hora_inicio: time,
         hora_fim: time,
         solicitado_por_id: int,
-        destinatario_id: Optional[int] = True,
+        destinatario_id: Optional[int] = None,
     ) -> Reuniao:
         reuniao = Reuniao(
             aluno=aluno,

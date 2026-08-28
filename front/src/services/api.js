@@ -1,8 +1,8 @@
 import axios from "axios";
 
 const api = axios.create({
-  // Mantenha APENAS a URL base do backend aqui
-  baseURL: import.meta.env.VITE_API_URL || "https://teste-3x8p.onrender.com",
+  baseURL: import.meta.env.VITE_API_URL || "http://localhost:8000",
+  withCredentials: true,
   headers: {
     "Content-Type": "application/json",
   },

@@ -18,10 +18,7 @@ agendar: async (solicitadoPorId, dados) => {
     destinatario_id: dados.destinatario_id ? Number(dados.destinatario_id) : null,
   };
 
-  const { data } = await api.post(
-    `/reunioes/?solicitado_por_id=${solicitadoPorId}`,
-    payload
-  );
+  const { data } = await api.post("/reunioes", payload);
   return data;
 },
 

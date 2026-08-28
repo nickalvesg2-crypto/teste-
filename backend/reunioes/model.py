@@ -1,9 +1,8 @@
 from datetime import datetime, date, time
 from enum import Enum
 from typing import Optional, TYPE_CHECKING
-from sqlalchemy import String, ForeignKey, DateTime, Date, Time, Text, func
+from sqlalchemy import String, ForeignKey, DateTime, Date, Time, Text, func, Enum as SQLEnum
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy.types import TypeDecorator
 
 from backend.core.database import Base
 
@@ -18,38 +17,7 @@ class StatusReuniaoEnum(str, Enum):
     REAGENDAMENTO_SOLICITADO = "REAGENDAMENTO_SOLICITADO"
     FINALIZADA = "FINALIZADA"
 
-class EnumString(TypeDecorator):
-    """Salva o valor do enum e aceita valores salvos em nome ou valor."""
-    impl = String
-    cache_ok = True
 
-    def __init__(self, enum_cls, length=50, **kw):
-        super().__init__(length=length, **kw)
-        self.enum_cls = enum_cls
-
-    def process_bind_param(self, value, dialect):
-        if value is None:
-            return None
-        if isinstance(value, self.enum_cls):
-            return value.value
-        return str(value)
-
-    def process_result_value(self, value, dialect):
-        if value is None:
-            return None
-        
-        value_str = str(value).strip()
-        
-        # Busca insensível a maiúsculas/minúsculas (compara tanto com .value quanto com .name)
-        for member in self.enum_cls:
-            if value_str.upper() == member.value.upper() or value_str.upper() == member.name.upper():
-                return member
-                
-        # Se mesmo assim não achar, tenta forçar a conversão pelo Enum ou lança exceção limpa
-        try:
-            return self.enum_cls(value)
-        except ValueError:
-            return value
 class Reuniao(Base):
     __tablename__ = "reunioes"
 
@@ -70,7 +38,7 @@ class Reuniao(Base):
     )
 
     status: Mapped[StatusReuniaoEnum] = mapped_column(
-        EnumString(StatusReuniaoEnum, length=50),
+        SQLEnum(StatusReuniaoEnum, native_enum=False, name="status_reuniao"),
         nullable=False,
         default=StatusReuniaoEnum.PENDENTE,
     )

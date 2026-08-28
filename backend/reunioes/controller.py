@@ -66,11 +66,9 @@ def listar_reunioes(
 @router.post("", response_model=ReuniaoResponseSchema, status_code=status.HTTP_201_CREATED)
 def agendar_reuniao(
     payload: ReuniaoSolicitarSchema,
-    solicitado_por_id: int | None = None,
     service: ReuniaoService = Depends(get_reuniao_service)
 ):
-    remetente_id = payload.solicitado_por_id or solicitado_por_id
-    if remetente_id is None:
+    if payload.solicitado_por_id is None:
         raise ValueError("Identificação do solicitante é obrigatória.")
 
     return service.agendar_reuniao(
@@ -80,8 +78,8 @@ def agendar_reuniao(
         data_dia=payload.data_dia,
         hora_inicio=payload.hora_inicio,
         hora_fim=payload.hora_fim,
-        solicitado_por_id=remetente_id,
-        destinatario_id=payload.destinatario_id or None,
+        solicitado_por_id=payload.solicitado_por_id,
+        destinatario_id=payload.destinatario_id,
     )
 
 
