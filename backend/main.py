@@ -55,8 +55,8 @@ app.include_router(reuniao_router)
 # ==========================================
 # HEALTH CHECK
 # ==========================================
-
 @app.get("/", tags=["Health"])
-@app.get("/health", tags=["Health"])
+@app.get("/health", tags=["Health"], status_code=200)
 def health_check():
-    return {"status": "ok"}
+    """Rota ultra leve utilizada para manter a API ativa no Render (Keep-Alive)."""
+    return {"status": "online"}
